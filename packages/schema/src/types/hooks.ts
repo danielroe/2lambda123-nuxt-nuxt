@@ -1,3 +1,4 @@
+import { relative, resolve } from 'node:path'
 import type { Server as HttpServer } from 'node:http'
 import type { Server as HttpsServer } from 'node:https'
 import type { TSConfig } from 'pkg-types'
@@ -179,7 +180,8 @@ export interface NuxtHooks {
    * @param context An object with `files` containing an array of router options files.
    * @returns Promise
    */
-  'pages:routerOptions': (context: { files: Array<{ path: string, optional?: boolean }> }) => HookResult
+  'pages:routerOptions': (context: {
+    path: string = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path: string)) files: Array<{ path: string, optional?: boolean }> }) => HookResult
 
   /**
    * Called when the dev middleware is being registered on the Nitro dev server.

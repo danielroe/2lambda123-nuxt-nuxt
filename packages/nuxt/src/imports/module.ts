@@ -65,6 +65,7 @@ export default defineNuxtModule<Partial<ImportsOptions>>({
 
     // Restart nuxt when composable directories are added/removed
     nuxt.hook('builder:watch', (event, relativePath) => {
+      relativePath = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, relativePath))
       if (!['addDir', 'unlinkDir'].includes(event)) { return }
 
       const path = resolve(nuxt.options.srcDir, relativePath)
@@ -123,6 +124,7 @@ export default defineNuxtModule<Partial<ImportsOptions>>({
       'imports.mjs'
     ]
     nuxt.hook('builder:watch', async (_, relativePath) => {
+      relativePath = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, relativePath))
       const path = resolve(nuxt.options.srcDir, relativePath)
       if (composablesDirs.some(dir => dir === path || path.startsWith(dir + '/'))) {
         await updateTemplates({

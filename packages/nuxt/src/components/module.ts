@@ -150,6 +150,7 @@ export default defineNuxtModule<ComponentsOptions>({
 
     // Restart dev server when component directories are added/removed
     nuxt.hook('builder:watch', (event, relativePath) => {
+      relativePath = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, relativePath))
       if (!['addDir', 'unlinkDir'].includes(event)) {
         return
       }
@@ -188,6 +189,7 @@ export default defineNuxtModule<ComponentsOptions>({
 
     // Watch for changes
     nuxt.hook('builder:watch', async (event, relativePath) => {
+      relativePath = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, relativePath))
       if (!['add', 'unlink'].includes(event)) {
         return
       }

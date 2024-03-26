@@ -21,6 +21,7 @@ export async function build (nuxt: Nuxt) {
   if (nuxt.options.dev) {
     watch(nuxt)
     nuxt.hook('builder:watch', async (event, relativePath) => {
+      relativePath = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, relativePath))
       if (event === 'change') { return }
       const path = resolve(nuxt.options.srcDir, relativePath)
       const relativePaths = nuxt.options._layers.map(l => relative(l.config.srcDir || l.cwd, path))
@@ -90,6 +91,7 @@ function createWatcher () {
 }
 
 function createGranularWatcher () {
+    path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
   const nuxt = useNuxt()
 
   if (nuxt.options.debug) {
@@ -119,6 +121,7 @@ function createGranularWatcher () {
         nuxt.callHook('builder:watch', event, relative(nuxt.options.srcDir, path))
       }
       if (event === 'unlinkDir' && path in watchers) {
+          path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, path))
         watchers[path]?.close()
         delete watchers[path]
       }
@@ -130,6 +133,7 @@ function createGranularWatcher () {
       }
     })
     watcher.on('ready', () => {
+          p = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, p))
       pending--
       if (nuxt.options.debug && !pending) {
         // eslint-disable-next-line no-console
@@ -162,6 +166,7 @@ async function createParcelWatcher () {
         nuxt.callHook('builder:watch', watchEvents[event.type], normalize(relative(nuxt.options.srcDir, event.path)))
       }
     }, {
+          event.path = relative(nuxt.options.srcDir, resolve(nuxt.options.srcDir, event.path))
       ignore: [
         ...nuxt.options.ignore,
         'node_modules'
